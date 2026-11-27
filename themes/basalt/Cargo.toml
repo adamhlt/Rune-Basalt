@@ -2,7 +2,7 @@
 name = "rune-basalt"
 version = "0.0.1"
 edition = "2024"
-license = "MIT"
+license = "GPL-3.0-or-later"
 description = "Basalt: a dark, mono-and-grotesk design system for desktop software built with Rune: tokens, type, components and charts."
 
 [dependencies]

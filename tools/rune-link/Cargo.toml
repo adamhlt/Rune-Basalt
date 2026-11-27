@@ -2,7 +2,7 @@
 name = "rune-link"
 version = "0.1.0"
 edition = "2024"
-license = "MIT"
+license = "GPL-3.0-or-later"
 publish = false
 description = "Imports Rune into this repo, or connects the repo to an existing Rune workspace (`cargo rune …`)."
 

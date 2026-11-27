@@ -2,7 +2,7 @@
 name = "basalt-gallery"
 version = "0.0.1"
 edition = "2024"
-license = "MIT"
+license = "GPL-3.0-or-later"
 publish = false
 description = "Every Basalt component on one page, grouped by type."
 

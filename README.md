@@ -95,3 +95,8 @@ Ctrl K opens the palette. Environment variables set the starting state, for snap
 | `examples/basalt-gallery` | Every component on one scrolling page, grouped by type (`cargo run -p basalt-gallery`) |
 | `tools/rune-link` | `cargo rune`: import or connect Rune |
 | `.cargo/config.toml` | The `cargo rune` alias |
+
+## License
+
+GPL-3.0-or-later, see [LICENSE](LICENSE). The bundled fonts keep their own SIL OFL licences in
+`themes/basalt/assets/fonts/`.
