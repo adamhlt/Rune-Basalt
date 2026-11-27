@@ -9,7 +9,7 @@
 ![UI](https://img.shields.io/badge/Rune-16171C)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-16171C)](LICENSE)
 
-<img src="snapshots/basalt-gallery.png" alt="The Basalt gallery" width="420">
+<img src="snapshots/basalt-gallery.png" alt="The Basalt gallery" width="560">
 
 </div>
 
