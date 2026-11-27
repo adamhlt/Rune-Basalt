@@ -196,10 +196,36 @@ pub fn badge(label: &str, level: Level) -> El {
     row().h(20.0).px(7.0).center().radius(6.0).fill(c.alpha(0.12)).child(text(label).font(TINY).color(c))
 }
 
+/// `c` at `k` times its own opacity: a lighter veil of a translucent token such as `tint`
+/// (`Color::alpha` replaces the opacity, so `tint.alpha(0.5)` would be text at 50 %).
+pub(crate) fn faint(c: rune::Color, k: f32) -> rune::Color {
+    c.alpha(c.a * k)
+}
+
 /// A keycap (`Ctrl K`, `Esc`).
 pub fn kbd(keys: &str) -> El {
     let s = tokens();
     row().h(20.0).min_w(20.0).px(5.0).center().radius(5.0).fill(s.tint).border_sides([1.0, 1.0, 2.0, 1.0], s.hair).child(text(keys).font(TINY).color(s.muted))
+}
+
+/// A shortcut as one keycap, in capitals with ` + ` between the keys: `Ctrl+O` reads
+/// `CTRL + O`. On macOS the command key stands for Ctrl (`⌘ + O`) and Delete reads `⌫`.
+pub fn shortcut_text(keys: &str) -> String {
+    let mac = cfg!(target_os = "macos");
+    let keys: Vec<String> = keys
+        .split('+')
+        .map(|k| match k {
+            "Ctrl" if mac => "⌘".to_string(),
+            "Del" if mac => "⌫".to_string(),
+            k => k.to_uppercase(),
+        })
+        .collect();
+    keys.join(" + ")
+}
+
+/// A shortcut in one keycap ([`shortcut_text`]): `shortcut("Ctrl+O")` shows `CTRL + O`.
+pub fn shortcut(keys: &str) -> El {
+    kbd(&shortcut_text(keys))
 }
 
 /// `true` when `label` contains `query`, ignoring case (palette and combobox filtering).
@@ -221,6 +247,20 @@ mod tests {
         assert!(!is_disabled());
         invalid(true, || assert!(is_invalid()));
         assert!(!is_invalid());
+    }
+
+    #[test]
+    fn shortcuts_read_in_capitals() {
+        let ctrl = if cfg!(target_os = "macos") { "⌘" } else { "CTRL" };
+        assert_eq!(shortcut_text("Ctrl+O"), format!("{ctrl} + O"));
+        assert_eq!(shortcut_text("V"), "V");
+        assert_eq!(shortcut_text("Ctrl+Shift+z"), format!("{ctrl} + SHIFT + Z"));
+    }
+
+    #[test]
+    fn faint_scales_the_opacity() {
+        let t = rune::Color::WHITE.alpha(0.08);
+        assert!((faint(t, 0.5).a - 0.04).abs() < 1e-6, "half the veil, not text at 50 %");
     }
 
     #[test]

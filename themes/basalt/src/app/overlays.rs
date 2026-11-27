@@ -2,9 +2,9 @@
 
 use std::rc::Rc;
 
-use rune::{Align, El, Key, KeyEvent, Side, TextEdit, TextStyle, Tx, col, el, icon, row, text, text_input};
+use rune::{Align, El, Key, KeyEvent, Side, TextEdit, TextStyle, Tx, col, icon, row, text, text_input};
 
-use super::{Level, Route, TINY, UI, UI_STRONG, act, caption, dot, floating, is_disabled, kbd, matches, route};
+use super::{Level, Route, TINY, UI, UI_STRONG, act, caption, dot, faint, floating, is_disabled, kbd, matches, route};
 use crate::{MONO, SANS, tokens};
 
 // ---- command palette --------------------------------------------------------------------------
@@ -98,7 +98,7 @@ pub fn palette_panel<S: 'static>(commands: &[Command], state: &PaletteState, aut
         let on = pos == hl;
         let f = run.clone();
         let mut r = row().w_full().h(34.0).px(10.0).gap(12.0).items_center().radius(8.0).role("option").checked(on).cursor(rune::Cursor::Pointer).on_press(move |st: &mut S| f(st, i));
-        r = if on { r.fill(s.tint) } else { r.hover_fill(s.tint.alpha(0.5)) };
+        r = if on { r.fill(s.tint) } else { r.hover_fill(faint(s.tint, 0.5)) };
         r = r.child(icon(c.glyph, 15.0).color(if on { s.text } else { s.muted })).child(text(c.label).font(UI).color(s.text).grow(1.0));
         if let Some(k) = c.shortcut {
             r = r.child(kbd(k));
@@ -119,19 +119,25 @@ pub fn palette_panel<S: 'static>(commands: &[Command], state: &PaletteState, aut
 
 // ---- dialog -----------------------------------------------------------------------------------
 
+/// How far below the window's top a [`dialog`] sits.
+pub const DIALOG_TOP: f32 = 56.0;
+
 /// A modal dialog over a dimmed window: focus stays inside it, Escape or a press outside
-/// dismisses it. Chain `.focus_return("trigger-key")` on the result to hand focus back to the
+/// dismisses it. It sits [`DIALOG_TOP`] below the window's top, centred across, so a dialog
+/// whose content changes grows downwards instead of moving its top. Chain `.focus_return("trigger-key")` on the result to hand focus back to the
 /// control that opened it.
 pub fn dialog<S: 'static>(title: &str, body: &str, actions: El, on_close: impl Fn(&mut S) + 'static) -> El {
     let s = tokens();
     let close = Rc::new(on_close);
     let c2 = close.clone();
-    el().key("dialog-backdrop")
+    col()
+        .key("dialog-backdrop")
         .absolute(0.0, 0.0)
         .w_full()
         .h_full()
         .fill(s.scrim)
-        .center()
+        .items_center()
+        .pt(DIALOG_TOP)
         .child(dialog_panel(title, body, actions).modal(true, move |st: &mut S| c2(st)))
         .on_background_press(move |st: &mut S| close(st))
 }

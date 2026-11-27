@@ -166,6 +166,7 @@ pub fn overflow_toolbar<S: 'static>(key: &str, items: Vec<ToolItem<S>>, width: f
 }
 
 /// A segmented control: one of `options`, the chosen one raised; arrow keys move the choice.
+/// Hovered, an unchosen segment only lights its label up, with no fill.
 pub fn segmented<S: 'static>(options: &[&str], selected: usize, on_pick: impl Fn(&mut S, usize) + 'static) -> El {
     let s = tokens();
     let pick = Rc::new(on_pick);
@@ -174,8 +175,9 @@ pub fn segmented<S: 'static>(options: &[&str], selected: usize, on_pick: impl Fn
         let on = i == selected;
         let f = pick.clone();
         let mut b = row().h_full().px(d(10.0)).center().radius(R - 3.0).role("radio").label(*o).checked(on).focusable(true).cursor(Cursor::Pointer);
-        b = if on { b.fill(s.tint).border(1.0, s.hair) } else { b.hover_fill(s.tint.alpha(0.5)) };
-        r = r.child(act(b.child(text(*o).font(UI).color(if on { s.text } else { s.muted })), move |st: &mut S| f(st, i)));
+        let label = text(*o).font(UI).color(if on { s.text } else { s.muted });
+        b = if on { b.fill(s.tint).border(1.0, s.hair).child(label) } else { b.hover_group().child(label.group_color(s.text)) };
+        r = r.child(act(b, move |st: &mut S| f(st, i)));
     }
     r
 }

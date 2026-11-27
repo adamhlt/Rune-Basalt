@@ -6,7 +6,7 @@ use std::rc::Rc;
 use rune::{Align, Cursor, Drag, El, Icon, Key, KeyEvent, ScrollSpec, Side, Tx, col, el, icon, row, text};
 
 use super::controls::tool_sep;
-use super::{CAPTION, Level, Popped, R, Route, TINY, TITLE, UI, UI_STRONG, act, caption, d, dot, floating, h, kbd, route};
+use super::{CAPTION, Level, Popped, R, Route, TINY, TITLE, UI, UI_STRONG, act, caption, d, dot, faint, floating, h, kbd, route};
 use crate::{FIGURE_STYLE, tokens};
 
 // ---- menu bar ---------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ pub fn menu_bar<S: 'static>(menus: Vec<Menu>, state: &MenuBarState, to: impl for
         let on = state.open == Some(i);
         let (t1, t2, t3) = (to.clone(), to.clone(), to.clone());
         let mut b = row().key(format!("menubar-{i}")).h(h() - 4.0).px(d(10.0)).items_center().radius(6.0).role("menuitem").label(m.title.as_str()).expanded(on).focusable(true).cursor(Cursor::Pointer);
-        b = if on { b.fill(s.tint) } else { b.hover_fill(s.tint.alpha(0.6)) };
+        b = if on { b.fill(s.tint) } else { b.hover_fill(faint(s.tint, 0.6)) };
         let count = m.items.len();
         bar = bar.child(
             b.child(text(m.title.as_str()).font(UI).color(if on { s.text } else { s.muted }))
@@ -200,7 +200,7 @@ pub fn value(v: &str) -> El {
 pub fn nav_item<S: 'static>(glyph: &'static Icon, label: &str, count: Option<&str>, active: bool, on_press: impl Fn(&mut S) + 'static) -> El {
     let s = tokens();
     let mut r = row().w_full().h(h()).px(10.0).gap(10.0).items_center().radius(R).role("link").label(label).checked(active).focusable(true).cursor(Cursor::Pointer);
-    r = if active { r.fill(s.tint) } else { r.hover_fill(s.tint.alpha(0.5)) };
+    r = if active { r.fill(s.tint) } else { r.hover_fill(faint(s.tint, 0.5)) };
     r = r.child(icon(glyph, 14.0).color(if active { s.text } else { s.muted })).child(text(label).font(UI).color(if active { s.text } else { s.muted }).grow(1.0));
     if let Some(c) = count {
         r = r.child(text(c).font(TINY).color(s.dim));
@@ -278,7 +278,7 @@ pub fn tree<S: 'static>(nodes: &[Node], state: &TreeState, to: impl for<'a> Fn(&
         let (t1, t2, t3, sel, ids2, has_children, id1, id2, id3) = (to.clone(), to.clone(), to.clone(), on_select.clone(), ids.clone(), has_children.clone(), n.id.clone(), n.id.clone(), n.id.clone());
         let branch = !n.children.is_empty();
         let mut r = row().key(format!("tree-{}", n.id)).w_full().h(26.0).pl(8.0 + depth as f32 * 14.0).pr(8.0).gap(6.0).items_center().radius(6.0).role("treeitem").label(n.label.as_str()).checked(on).expanded(open).focusable(true).cursor(Cursor::Pointer);
-        r = if on { r.fill(s.tint) } else { r.hover_fill(s.tint.alpha(0.5)) };
+        r = if on { r.fill(s.tint) } else { r.hover_fill(faint(s.tint, 0.5)) };
         r = if branch {
             let chevron = row().size(14.0, 14.0).center().role("button").label(if open { "Collapse" } else { "Expand" }).child(icon(k.glyph.chevron_down, 9.0).color(s.dim).rotate(if open { 0.0 } else { -std::f32::consts::FRAC_PI_2 }));
             r.child(chevron.on_press(move |st: &mut S| t1(st).toggle(&id1)))
@@ -332,7 +332,7 @@ pub fn tree_item<S: 'static>(label: &str, depth: usize, expanded: Option<bool>, 
     let s = tokens();
     let k = crate::kit();
     let mut r = row().w_full().h(26.0).pl(8.0 + depth as f32 * 14.0).pr(8.0).gap(6.0).items_center().radius(6.0).role("treeitem").label(label).checked(selected).focusable(true).cursor(Cursor::Pointer);
-    r = if selected { r.fill(s.tint) } else { r.hover_fill(s.tint.alpha(0.5)) };
+    r = if selected { r.fill(s.tint) } else { r.hover_fill(faint(s.tint, 0.5)) };
     r = match expanded {
         Some(open) => r.child(icon(k.glyph.chevron_down, 9.0).color(s.dim).rotate(if open { 0.0 } else { -std::f32::consts::FRAC_PI_2 })),
         None => r.child(el().w(9.0)),
@@ -357,7 +357,7 @@ pub fn doc_tabs<S: 'static>(tabs: &[(&str, bool)], active: usize, on_pick: impl 
         let on = i == active;
         let (f, c, c2) = (pick.clone(), close.clone(), close.clone());
         let mut t = row().h(32.0).px(12.0).gap(8.0).items_center().corners([R, R, 0.0, 0.0]).role("tab").label(*title).checked(on).focusable(true).cursor(Cursor::Pointer).on_middle_press(move |st: &mut S, _: &mut Tx| c2(st, i)).on_press(move |st: &mut S| f(st, i));
-        t = if on { t.fill(s.panel).border_sides([1.0, 1.0, 0.0, 1.0], s.line) } else { t.hover_fill(s.tint.alpha(0.5)) };
+        t = if on { t.fill(s.panel).border_sides([1.0, 1.0, 0.0, 1.0], s.line) } else { t.hover_fill(faint(s.tint, 0.5)) };
         t = t.child(text(*title).font(UI).color(if on { s.text } else { s.muted }));
         if *dirty {
             t = t.child(el().size(6.0, 6.0).radius(3.0).fill(s.muted));

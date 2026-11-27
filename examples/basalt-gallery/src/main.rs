@@ -330,7 +330,17 @@ fn actions(s: &State, layers: &mut Vec<El>) -> El {
         app::ToolItem::new(&oc::SETTINGS_GEAR, "Settings", |_: &mut State| {}),
     ];
     let overflow = framed("", 400.0, row().padding(6.0).child(app::overflow_toolbar("tools", tools, 388.0, s.more_open, |s: &mut State| &mut s.more_open).mount(layers)));
-    let keys = row().gap(6.0).items_center().child(app::kbd("Ctrl")).child(app::kbd("K")).child(el().w(10.0)).child(app::kbd("Esc")).child(app::kbd("↵")).child(app::kbd("↑↓"));
+    let keys = row()
+        .gap(6.0)
+        .items_center()
+        .child(app::kbd("Ctrl"))
+        .child(app::kbd("K"))
+        .child(el().w(10.0))
+        .child(app::kbd("Esc"))
+        .child(app::kbd("↵"))
+        .child(app::kbd("↑↓"))
+        .child(el().w(10.0))
+        .child(app::shortcut("Ctrl+O"));
     let _ = tk;
     grid()
         .child(spec(&format!("Buttons · primary, secondary, ghost, danger  ({} presses)", s.clicks), buttons))

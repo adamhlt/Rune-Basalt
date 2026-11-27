@@ -43,7 +43,7 @@ app::badge("ready", Level::Ok);
 | Chrome | `menu_bar`, `context_menu`, `nav_item`, keyboard `tree`, `doc_tabs`, `breadcrumbs`, `pane_header`, collapsible `group`, `splitter`, `dock_panel`, `scroll_view`, `status_bar`, `progress`, `spinner`, `busy` |
 | Controls | `button` (primary, secondary, ghost, danger), `icon_button`, `toolbar` and `overflow_toolbar`, `segmented`, `text_field`, `stepper`, `slider`, `checkbox`, `switch`, `radio`, `field` with `field_msg` |
 | Inputs | `select`, `combobox`, `number_field`, `textarea`, `tag_input`, `date_picker`, `color_picker`, `file_field` |
-| Data | `Table` (sticky header, virtualized rows, sort, resizable columns, multi-selection, checkboxes, text / number / bar / badge cells), `log_view`, `reorder_list`, `prop`, `readout`, `badge`, `dot`, `kbd`, `empty_state` |
+| Data | `Table` (sticky header, virtualized rows, sort, resizable columns, multi-selection, checkboxes, text / number / bar / badge cells), `log_view`, `reorder_list`, `prop`, `readout`, `badge`, `dot`, `kbd`, `shortcut` (one keycap, `CTRL + O` or `⌘ + O`), `empty_state` |
 | Overlays | `command_palette` (Ctrl K), `dialog` (modal, returns focus), `toast_stack` with `ToastQueue`, `tooltip`, and their panels alone |
 
 **Plots** (`rune_basalt::plot`)

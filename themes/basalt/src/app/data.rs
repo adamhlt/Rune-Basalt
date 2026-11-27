@@ -4,7 +4,7 @@ use std::rc::Rc;
 
 use rune::{Cursor, Drag, El, GrowthSpec, Key, KeyEvent, Mods, ScrollSpec, Tx, col, el, icon, row, text};
 
-use super::{Level, R, Route, TINY, UI, UI_STRONG, caption, d, route};
+use super::{Level, R, Route, TINY, UI, UI_STRONG, caption, d, faint, route};
 use crate::tokens;
 
 // ---- table ------------------------------------------------------------------------------------
@@ -165,7 +165,7 @@ impl<'a> Table<'a> {
         }
         for i in 0..self.columns.len() {
             let t = to.clone();
-            let mut hcell = cell_box(i).gap(4.0).cursor(Cursor::Pointer).hover_fill(s.tint.alpha(0.4)).role("columnheader").focusable(true).child(caption(self.columns[i].title));
+            let mut hcell = cell_box(i).gap(4.0).cursor(Cursor::Pointer).hover_fill(faint(s.tint, 0.4)).role("columnheader").focusable(true).child(caption(self.columns[i].title));
             if state.sort.0 == i {
                 hcell = hcell.child(icon(k.glyph.chevron_down, 9.0).color(s.muted).rotate(if state.sort.1 { std::f32::consts::PI } else { 0.0 }));
             }
@@ -320,7 +320,7 @@ pub fn reorder_list<S: 'static>(key: &str, items: &[&str], state: &ReorderState,
         if lifted {
             r = r.fill(s.float).border(1.0, s.hair).offset(0.0, state.dy).box_shadow(super::shadow());
         } else {
-            r = r.hover_fill(s.tint.alpha(0.5));
+            r = r.hover_fill(faint(s.tint, 0.5));
         }
         // The insertion line.
         if state.dragging.is_some() && state.dragging != Some(i) && state.target == i && state.dragging.is_some_and(|f| f > i) {
