@@ -1,0 +1,12 @@
+[package]
+name = "basalt-gallery"
+version = "0.0.1"
+edition = "2024"
+license = "MIT"
+publish = false
+description = "Every Basalt component on one page, grouped by type."
+
+[dependencies]
+rune = { workspace = true, default-features = true }
+rune-kit = { workspace = true, default-features = true }
+rune-basalt = { path = "../../themes/basalt" }

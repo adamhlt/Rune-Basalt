@@ -1,0 +1,7 @@
+/target
+/tools/rune-link/target
+
+# Written by `cargo rune import` (the "import" mode): each checkout chooses its own mode.
+/Cargo.toml
+/Cargo.lock
+/rust-toolchain.toml

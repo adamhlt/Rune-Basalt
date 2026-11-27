@@ -1,0 +1,3 @@
+[alias]
+# `cargo rune import | unimport | connect <workspace> | disconnect <workspace> | status`
+rune = "run --quiet --manifest-path tools/rune-link/Cargo.toml --"
